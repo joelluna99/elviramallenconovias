@@ -1,0 +1,1458 @@
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Elvira Mallenco Novias · Atelier de Alta Costura en Arroyomolinos</title>
+  
+  <!-- Tipografía de alta costura: Haggia / Clustery Royals & fallbacks editoriales -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Cinzel:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ─── fuentes locales y de alta costura: Clustery Royals & Haggia ─── */
+    @font-face {
+      font-family: 'Clustery Royals';
+      src: local('Clustery Royals'), local('ClusteryRoyals'), local('Clustery Royals Regular'), local('Clustery Royals DEMO');
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Haggia';
+      src: local('Haggia'), local('Haggia DEMO'), local('Haggia-Regular'), local('Haggia Regular');
+      font-display: swap;
+    }
+
+    /* ─── tokens ─────────────────────────────────────────────────────────
+       Paleta de tonos pastel claros, seda y alta costura nupcial.
+       No se utiliza ningún código hexadecimal fuera de este bloque :root. */
+    :root {
+      --bg:          #fcfaf7;   /* fondo marfil lino claro pastel */
+      --surface:     #ffffff;   /* blanco puro seda para tarjetas y paneles */
+      --fg:          #2c2825;   /* carbón cálido suave para lectura óptima */
+      --muted:       #78716a;   /* topo cálido suave para textos secundarios */
+      --border:      #ece5dc;   /* hilo de seda tenue para divisores y bordes */
+      --accent:      #b78276;   /* rosa empolvado / nude terracota pastel nupcial */
+      --surface-alt: #f6f1ea;   /* tono pergamino suave alternativo */
+
+      /* derivados mediante color-mix */
+      --accent-soft: color-mix(in oklch, var(--accent) 14%, transparent);
+      --accent-hover: color-mix(in oklch, var(--accent) 88%, black);
+      --fg-soft:     color-mix(in oklch, var(--fg) 5%, transparent);
+      --surface-glass: color-mix(in oklch, var(--bg) 88%, transparent);
+
+      /* tipografía: Clustery Royals / Haggia con fallbacks editoriales de alto contraste */
+      --font-display: 'Clustery Royals', 'Haggia', 'Bodoni Moda', 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+      --font-body:    'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
+      --font-mono:    'Cinzel', ui-monospace, 'JetBrains Mono', 'SF Mono', monospace;
+
+      /* escala fluida clamp */
+      --fs-h1: clamp(38px, 5.2vw, 68px);
+      --fs-h2: clamp(28px, 3.8vw, 44px);
+      --fs-h3: 22px;
+      --fs-lead: clamp(17px, 1.4vw, 20px);
+      --fs-body: 16px;
+      --fs-meta: 13px;
+
+      /* espaciado */
+      --gap-xs: 8px;
+      --gap-sm: 12px;
+      --gap-md: 20px;
+      --gap-lg: 32px;
+      --gap-xl: 56px;
+      --gap-2xl: 96px;
+      --container: 1160px;
+      --gutter: 28px;
+
+      --radius: 8px;
+      --radius-lg: 14px;
+      --radius-pill: 999px;
+
+      --ease-silk: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* ─── reset & base ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html {
+      -webkit-text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: var(--fs-body);
+      line-height: 1.6;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img, svg { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; border: none; background: none; }
+    p { text-wrap: pretty; }
+    h1, h2, h3, h4 { text-wrap: balance; }
+
+    /* ─── barra de lectura narrativa (scroll progress) ──────────────── */
+    .scroll-progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: var(--accent);
+      width: 0%;
+      z-index: 100;
+      transition: width 0.1s ease-out;
+    }
+
+    /* ─── layout primitives ─────────────────────────────────────────── */
+    .container {
+      max-width: var(--container);
+      margin-inline: auto;
+      padding-inline: var(--gutter);
+    }
+    .section {
+      padding-block: clamp(56px, 8vw, var(--gap-2xl));
+      position: relative;
+    }
+    .section + .section { border-top: 1px solid var(--border); }
+    .stack { display: flex; flex-direction: column; }
+    .stack > * + * { margin-top: var(--gap-md); }
+    .row { display: flex; align-items: center; gap: var(--gap-md); }
+    .row-between { display: flex; align-items: center; justify-content: space-between; gap: var(--gap-md); }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--gap-lg); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-lg); }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap-md); }
+    .grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: var(--gap-xl); align-items: start; }
+    .grid-1-2 { display: grid; grid-template-columns: 1fr 2fr; gap: var(--gap-xl); align-items: start; }
+    .grid-split { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: var(--gap-xl); align-items: center; }
+
+    @media (max-width: 960px) {
+      .grid-2, .grid-3, .grid-4, .grid-2-1, .grid-1-2, .grid-split {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ─── tipografía ─────────────────────────────────────────────────── */
+    .h1, h1 {
+      font-family: var(--font-display);
+      font-size: var(--fs-h1);
+      line-height: 1.08;
+      letter-spacing: -0.015em;
+      margin: 0;
+      font-weight: 500;
+      font-feature-settings: "liga" 1, "dlig" 1;
+    }
+    .h2, h2 {
+      font-family: var(--font-display);
+      font-size: var(--fs-h2);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin: 0;
+      font-weight: 500;
+      font-feature-settings: "liga" 1, "dlig" 1;
+    }
+    .h3, h3 {
+      font-family: var(--font-display);
+      font-size: var(--fs-h3);
+      font-weight: 600;
+      line-height: 1.3;
+      letter-spacing: -0.005em;
+      margin: 0;
+      font-feature-settings: "liga" 1, "dlig" 1;
+    }
+    .lead {
+      font-size: var(--fs-lead);
+      line-height: 1.6;
+      color: var(--muted);
+      max-width: 58ch;
+      margin: 0;
+    }
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 0 0 var(--gap-sm);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 18px;
+      height: 1px;
+      background: var(--accent);
+    }
+    .meta { font-family: var(--font-mono); font-size: var(--fs-meta); color: var(--muted); }
+    .num  { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+    /* ─── barra de navegación (topnav semi-transparente en scroll) ───── */
+    .topnav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(252, 250, 247, 0.45);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid transparent;
+      transition: background 0.35s var(--ease-silk),
+                  border-color 0.35s var(--ease-silk),
+                  box-shadow 0.35s var(--ease-silk),
+                  backdrop-filter 0.35s var(--ease-silk);
+    }
+    .topnav.scrolled {
+      background: rgba(252, 250, 247, 0.82);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid rgba(236, 229, 220, 0.85);
+      box-shadow: 0 10px 30px -6px rgba(44, 40, 37, 0.05);
+    }
+    .topnav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-block: 20px;
+      transition: padding-block 0.3s ease;
+    }
+    .topnav.scrolled .topnav-inner {
+      padding-block: 14px;
+    }
+    .brand-mark {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .brand-mark .logo {
+      font-family: var(--font-display);
+      font-size: 21px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--fg);
+      text-transform: uppercase;
+    }
+    .brand-mark .sublogo {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .topnav nav {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    .topnav nav a {
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      color: var(--muted);
+      position: relative;
+      transition: color 0.2s ease;
+      padding-block: 4px;
+    }
+    .topnav nav a:hover {
+      color: var(--fg);
+    }
+    .topnav nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: width 0.25s var(--ease-silk);
+    }
+    .topnav nav a:hover::after {
+      width: 100%;
+    }
+    .topnav-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--gap-sm);
+    }
+    .mobile-menu-btn {
+      display: none;
+      padding: 8px;
+      color: var(--fg);
+    }
+
+    @media (max-width: 920px) {
+      .topnav nav { display: none; }
+      .mobile-menu-btn { display: block; }
+    }
+
+    /* ─── botones ───────────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 13px 26px;
+      border-radius: var(--radius);
+      border: 1px solid transparent;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary {
+      background: var(--accent);
+      color: var(--surface);
+      border-color: var(--accent);
+    }
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
+      box-shadow: 0 4px 16px var(--accent-soft);
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--fg);
+      border-color: var(--border);
+    }
+    .btn-secondary:hover {
+      border-color: var(--fg);
+      background: var(--surface);
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--fg);
+      border-color: transparent;
+      padding-inline: 8px;
+    }
+    .btn-ghost:hover {
+      color: var(--accent);
+    }
+    .btn-arrow::after {
+      content: '→';
+      transition: transform 0.2s var(--ease-silk);
+    }
+    .btn-arrow:hover::after {
+      transform: translateX(4px);
+    }
+
+    /* ─── hero moderno con fondo panorámico y difuminación de derecha a izquierda ── */
+    .hero {
+      position: relative;
+      min-height: clamp(620px, 86vh, 880px);
+      display: flex;
+      align-items: center;
+      padding-top: clamp(64px, 8vw, 110px);
+      padding-bottom: clamp(64px, 8vw, 110px);
+      background-color: var(--bg);
+      overflow: hidden;
+    }
+
+    /* Fondo fotográfico con difuminado gradual de derecha a izquierda */
+    .hero-backdrop {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .hero-backdrop-img {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 72%;
+      min-width: 700px;
+      height: 100%;
+      object-fit: cover;
+      object-position: right center;
+      /* Difuminación nupcial de derecha a izquierda:
+         En la derecha (0%) la imagen real luce con nitidez;
+         hacia la izquierda (100%) se desvanece suavemente en el tono pastel marfil */
+      -webkit-mask-image: linear-gradient(to left, 
+        rgba(0, 0, 0, 0.95) 0%, 
+        rgba(0, 0, 0, 0.90) 25%, 
+        rgba(0, 0, 0, 0.65) 55%, 
+        rgba(0, 0, 0, 0.20) 80%, 
+        rgba(0, 0, 0, 0) 100%
+      );
+      mask-image: linear-gradient(to left, 
+        rgba(0, 0, 0, 0.95) 0%, 
+        rgba(0, 0, 0, 0.90) 25%, 
+        rgba(0, 0, 0, 0.65) 55%, 
+        rgba(0, 0, 0, 0.20) 80%, 
+        rgba(0, 0, 0, 0) 100%
+      );
+      transition: transform 12s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .hero:hover .hero-backdrop-img {
+      transform: scale(1.025);
+    }
+
+    /* Velo de difusión suave y transición armónica al fondo marfil */
+    .hero-backdrop-fade {
+      position: absolute;
+      inset: 0;
+      background: 
+        linear-gradient(to right, 
+          var(--bg) 0%, 
+          var(--bg) 32%, 
+          color-mix(in oklch, var(--bg) 92%, transparent) 54%, 
+          color-mix(in oklch, var(--bg) 45%, transparent) 78%, 
+          transparent 100%
+        ),
+        linear-gradient(to bottom, 
+          color-mix(in oklch, var(--bg) 75%, transparent) 0%, 
+          transparent 18%, 
+          transparent 80%, 
+          var(--bg) 100%
+        );
+    }
+
+    .hero-container {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+    }
+
+    .hero-content {
+      max-width: 660px;
+    }
+
+    .hero-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: var(--gap-md);
+      box-shadow: 0 2px 10px rgba(44, 40, 37, 0.03);
+    }
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      position: relative;
+    }
+    .status-dot::after {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.35;
+      animation: pulseDot 2.4s infinite ease-out;
+    }
+    @keyframes pulseDot {
+      0% { transform: scale(0.9); opacity: 0.6; }
+      50% { transform: scale(1.9); opacity: 0; }
+      100% { transform: scale(0.9); opacity: 0.6; }
+    }
+    .hero-title {
+      font-size: var(--fs-h1);
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+      color: var(--fg);
+      margin-bottom: var(--gap-md);
+    }
+    .hero-title-italic {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--accent);
+      display: inline;
+    }
+    .hero-lead {
+      font-size: var(--fs-lead);
+      line-height: 1.62;
+      color: var(--muted);
+      max-width: 54ch;
+      margin-bottom: var(--gap-lg);
+    }
+    .hero-cta {
+      display: flex;
+      gap: var(--gap-sm);
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: var(--gap-lg);
+    }
+    .hero-trust-list {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 18px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      padding-top: var(--gap-sm);
+      border-top: 1px solid var(--border);
+    }
+    .hero-trust-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .hero-trust-item::before {
+      content: '✦';
+      color: var(--accent);
+      font-size: 10px;
+    }
+
+    .hero-badges-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: var(--gap-md);
+      margin-bottom: var(--gap-xs);
+    }
+    .hero-inline-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      padding: 6px 14px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg);
+      box-shadow: 0 2px 10px rgba(44, 40, 37, 0.04);
+    }
+    .hero-inline-badge svg {
+      color: var(--accent);
+    }
+    .hero-inline-card {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      padding: 6px 14px;
+      font-size: 12px;
+      color: var(--muted);
+      box-shadow: 0 2px 10px rgba(44, 40, 37, 0.03);
+    }
+    .hero-inline-card strong {
+      color: var(--fg);
+      font-weight: 600;
+    }
+    .hero-inline-dot {
+      color: var(--accent);
+      font-size: 9px;
+    }
+
+    /* Indicador interactivo de scroll hacia abajo */
+    .hero-scroll-cue {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 36px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.2s ease;
+    }
+    .hero-scroll-cue:hover {
+      color: var(--fg);
+    }
+    .scroll-cue-line {
+      width: 32px;
+      height: 1px;
+      background: var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .scroll-cue-line::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 14px;
+      height: 100%;
+      background: var(--accent);
+      animation: scrollLineSlide 2.2s infinite cubic-bezier(0.65, 0, 0.35, 1);
+    }
+    @keyframes scrollLineSlide {
+      0% { transform: translateX(-100%); }
+      60% { transform: translateX(250%); }
+      100% { transform: translateX(250%); }
+    }
+
+    @media (max-width: 960px) {
+      .hero {
+        min-height: auto;
+        padding-top: clamp(48px, 6vw, 80px);
+        padding-bottom: clamp(56px, 8vw, 88px);
+      }
+      .hero-backdrop-img {
+        width: 100%;
+        min-width: 100%;
+        opacity: 0.25;
+        -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.85) 100%);
+        mask-image: linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.85) 100%);
+      }
+      .hero-backdrop-fade {
+        background: linear-gradient(to bottom, 
+          color-mix(in oklch, var(--bg) 75%, transparent) 0%, 
+          var(--bg) 55%, 
+          var(--bg) 100%
+        );
+      }
+      .hero-content {
+        max-width: 100%;
+      }
+    }
+
+    /* ─── estadísticas y credenciales ───────────────────────────────── */
+    .stat {
+      padding-block: 8px;
+    }
+    .stat .stat-num {
+      font-family: var(--font-display);
+      font-size: clamp(48px, 6vw, 76px);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      color: var(--accent);
+      font-weight: 500;
+    }
+    .stat .stat-label {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.5;
+      margin-top: 10px;
+      max-width: 28ch;
+    }
+    .stat .stat-unit {
+      font-size: 0.55em;
+      opacity: 0.85;
+      margin-left: 2px;
+    }
+
+    /* ─── tarjetas y colecciones ────────────────────────────────────── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      transition: transform 0.3s var(--ease-silk), box-shadow 0.3s var(--ease-silk), border-color 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px var(--fg-soft);
+      border-color: color-mix(in oklch, var(--accent) 35%, var(--border));
+    }
+    .card-img-wrapper {
+      position: relative;
+      border-radius: calc(var(--radius-lg) - 6px);
+      overflow: hidden;
+      margin-bottom: var(--gap-md);
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+    }
+    .card-img-wrapper img {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.8s var(--ease-silk);
+    }
+    .card:hover .card-img-wrapper img {
+      transform: scale(1.04);
+    }
+    .card-tag {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: var(--surface-glass);
+      backdrop-filter: blur(8px);
+      color: var(--fg);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+    }
+    .card h3 {
+      margin-bottom: 8px;
+    }
+    .card p {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.6;
+      margin: 0 0 var(--gap-md);
+      flex-grow: 1;
+    }
+
+    /* ─── el taller & la artesana ───────────────────────────────────── */
+    .atelier-section {
+      background: var(--surface);
+    }
+    .atelier-img-box {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 12px 32px var(--fg-soft);
+    }
+    .atelier-img-box img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ─── proceso narrativo (el viaje del vestido) ──────────────────── */
+    .process-nav {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--gap-md);
+      margin-top: var(--gap-xl);
+    }
+    @media (max-width: 900px) {
+      .process-nav { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 540px) {
+      .process-nav { grid-template-columns: 1fr; }
+    }
+    .step-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      position: relative;
+      cursor: pointer;
+      transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+    }
+    .step-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .step-card.active {
+      border-color: var(--accent);
+      background: linear-gradient(180deg, var(--surface) 0%, var(--surface-alt) 100%);
+      box-shadow: 0 8px 24px var(--fg-soft);
+    }
+    .step-num {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 12px;
+      display: block;
+    }
+    .step-card h4 {
+      font-family: var(--font-display);
+      font-size: 19px;
+      font-weight: 600;
+      margin: 0 0 10px;
+      color: var(--fg);
+    }
+    .step-card p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* ─── testimonio / cita ─────────────────────────────────────────── */
+    .quote-box {
+      max-width: 820px;
+      margin-inline: auto;
+      text-align: center;
+      position: relative;
+    }
+    .quote-mark {
+      font-family: var(--font-display);
+      font-size: 120px;
+      line-height: 0.5;
+      color: var(--accent);
+      opacity: 0.25;
+      margin-bottom: -10px;
+    }
+    .quote {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 2.8vw, 34px);
+      line-height: 1.38;
+      letter-spacing: -0.01em;
+      margin: 0;
+      color: var(--fg);
+      font-style: italic;
+    }
+    .quote-author {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-top: var(--gap-lg);
+      text-transform: uppercase;
+    }
+
+    /* ─── sección de cita previa y contacto ─────────────────────────── */
+    .cta-strip {
+      background: var(--surface-alt);
+    }
+    .appointment-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--gap-2xl);
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .appointment-grid { grid-template-columns: 1fr; gap: var(--gap-xl); }
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+    .field label {
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+    }
+    .input, .textarea, select.input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--fg);
+      font: inherit;
+      font-size: 15px;
+      transition: border-color 0.2s ease, outline 0.2s ease;
+    }
+    .input:focus, .textarea:focus, select.input:focus {
+      outline: 2px solid var(--accent-soft);
+      border-color: var(--accent);
+    }
+    .textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    .contact-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: 0 8px 24px var(--fg-soft);
+    }
+    .contact-detail-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding-block: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .contact-detail-row:last-child {
+      border-bottom: none;
+    }
+    .detail-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius);
+      background: var(--accent-soft);
+      color: var(--accent);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+    .detail-icon svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* ─── pie de página (footer) ────────────────────────────────────── */
+    .pagefoot {
+      padding-block: var(--gap-xl);
+      color: var(--muted);
+      font-size: 13px;
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    /* ─── animaciones de scroll narrativo ───────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity 0.85s var(--ease-silk), transform 0.85s var(--ease-silk);
+      will-change: opacity, transform;
+    }
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.12s; }
+    .reveal-delay-2 { transition-delay: 0.24s; }
+    .reveal-delay-3 { transition-delay: 0.36s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      .scroll-progress-bar { display: none; }
+    }
+
+    /* ─── modal de confirmación ─────────────────────────────────────── */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: color-mix(in oklch, var(--fg) 50%, transparent);
+      backdrop-filter: blur(4px);
+      display: none;
+      place-items: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+    .modal-backdrop.open {
+      display: grid;
+    }
+    .modal-dialog {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      max-width: 480px;
+      width: 100%;
+      padding: 32px;
+      box-shadow: 0 24px 60px color-mix(in oklch, var(--fg) 20%, transparent);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <!-- Barra de progreso narrativa de scrolling -->
+  <div class="scroll-progress-bar" id="scrollProgress" aria-hidden="true"></div>
+
+  <!-- Cabecera principal -->
+  <header class="topnav" data-od-id="topnav">
+    <div class="container topnav-inner">
+      <a href="#" class="brand-mark">
+        <span class="logo">Elvira Mallenco</span>
+        <span class="sublogo">Atelier · Alta Costura</span>
+      </a>
+      <nav>
+        <a href="#novias">Novias a Medida</a>
+        <a href="#fiesta">Fiesta & Madrinas</a>
+        <a href="#taller">El Taller</a>
+        <a href="#proceso">El Proceso</a>
+        <a href="#arreglos">Arreglos</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+      <div class="topnav-actions">
+        <a href="#cita" class="btn btn-primary">Pedir Cita</a>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menú">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="content">
+    <!-- Hero monumental, elegante y moderno de alta costura con fondo difuminado -->
+    <section class="section hero" data-od-id="hero">
+      <!-- Fondo con imagen real y difuminación de derecha a izquierda -->
+      <div class="hero-backdrop" aria-hidden="true">
+        <img
+          src="assets/cabecera-vestidos-de-novia-en-arroyomolinos.jpeg"
+          alt="Atelier de alta costura nupcial Elvira Mallenco en Arroyomolinos"
+          class="hero-backdrop-img"
+          width="1920"
+          height="732"
+          loading="eager"
+        />
+        <div class="hero-backdrop-fade"></div>
+      </div>
+
+      <div class="container hero-container">
+        <div class="hero-content reveal">
+          <div class="hero-status-pill">
+            <span class="status-dot"></span>
+            <span>Atelier Nupcial · Agenda Abierta 2026/2027</span>
+          </div>
+          
+          <h1 class="h1 hero-title">
+            El vestido con el que soñaste, <span class="hero-title-italic">creado a mano</span> puntada a puntada.
+          </h1>
+          
+          <p class="lead hero-lead">
+            Más de 30 años vistiendo emociones únicas. Confeccionamos sobre tu propia figura con tejidos nobles, seda natural y la devoción de la verdadera alta costura artesanal en Arroyomolinos (Madrid).
+          </p>
+          
+          <div class="hero-cta">
+            <a href="#cita" class="btn btn-primary">Reservar Cita en el Atelier</a>
+            <a href="#proceso" class="btn btn-secondary btn-arrow">Conoce el Proceso</a>
+          </div>
+
+          <div class="hero-trust-list">
+            <span class="hero-trust-item">Prueba privada exclusiva</span>
+            <span class="hero-trust-item">Patronaje a medida</span>
+            <span class="hero-trust-item">Trato directo con Elvira</span>
+          </div>
+
+          <div class="hero-badges-row">
+            <div class="hero-inline-badge">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+              </svg>
+              <span>Artesanía 100% en Madrid</span>
+            </div>
+            <div class="hero-inline-card">
+              <span class="hero-inline-dot">✦</span>
+              <span><strong>+30 Años de Taller</strong> · Pruebas a puerta cerrada</span>
+            </div>
+          </div>
+
+          <div>
+            <a href="#novias" class="hero-scroll-cue">
+              <span>Descubre las colecciones</span>
+              <div class="scroll-cue-line" aria-hidden="true"></div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Credenciales y valores de confianza -->
+    <section class="section" data-od-id="stats">
+      <div class="container">
+        <div class="grid-3">
+          <div class="stat reveal">
+            <div class="stat-num num">+30<span class="stat-unit">Años</span></div>
+            <p class="stat-label">De maestría en patronaje, aguja experta y dedicación exclusiva al sector nupcial.</p>
+          </div>
+          <div class="stat reveal reveal-delay-1">
+            <div class="stat-num num">100<span class="stat-unit">%</span></div>
+            <p class="stat-label">Hecho a mano en nuestro taller propio, sin intermediarios ni producción en cadena.</p>
+          </div>
+          <div class="stat reveal reveal-delay-2">
+            <div class="stat-num num">1<span class="stat-unit">a 1</span></div>
+            <p class="stat-label">Atención íntima y confidencial con prueba privada para ti y tus acompañantes.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Colecciones y Especialidades -->
+    <section class="section" id="novias" data-od-id="services">
+      <div class="container stack" style="gap: 56px;">
+        <div class="reveal" style="max-width: 48ch;">
+          <p class="eyebrow">Especialidades del Atelier</p>
+          <h2>Tres expresiones de la alta costura para momentos irrepetibles.</h2>
+        </div>
+        <div class="grid-3">
+          <!-- Colección Novias -->
+          <article class="card reveal" data-od-id="service-novias">
+            <div class="card-img-wrapper">
+              <span class="card-tag">Exclusividad</span>
+              <img
+                src="assets/vestidos-de-novia-arroyomolinos.jpg"
+                alt="Vestidos de novia a medida en Arroyomolinos"
+                width="482"
+                height="640"
+                loading="lazy"
+              />
+            </div>
+            <h3>Vestidos de Novia a Medida</h3>
+            <p>
+              Diseñamos tu vestido a partir de tus deseos, recuerdos o inspiraciones. Seleccionamos mikados, crepes de seda natural y encajes bordados para una caída perfecta.
+            </p>
+            <div>
+              <a href="#cita" class="btn btn-secondary" style="width: 100%;">Solicitar prueba nupcial</a>
+            </div>
+          </article>
+
+          <!-- Fiesta y Madrinas -->
+          <article class="card reveal reveal-delay-1" id="fiesta" data-od-id="service-fiesta">
+            <div class="card-img-wrapper">
+              <span class="card-tag">Ceremonia</span>
+              <img
+                src="assets/vestidos-de-fiesta-arroyomolinos.jpg"
+                alt="Vestidos de fiesta y trajes de madrina en Arroyomolinos"
+                width="630"
+                height="640"
+                loading="lazy"
+              />
+            </div>
+            <h3>Fiesta, Madrinas e Invitadas</h3>
+            <p>
+              Patrones favorecedores concebidos para resaltar tu elegancia en bodas y celebraciones señaladas. Colores armónicos, cortes impecables y acabados artesanales.
+            </p>
+            <div>
+              <a href="#cita" class="btn btn-secondary" style="width: 100%;">Consultar diseños</a>
+            </div>
+          </article>
+
+          <!-- Arreglos de Alta Costura -->
+          <article class="card reveal reveal-delay-2" id="arreglos" data-od-id="service-arreglos">
+            <div class="card-img-wrapper">
+              <span class="card-tag">Modistería Experta</span>
+              <img
+                src="assets/arreglos-vestidos-de-novia-arroyomolinos.jpg"
+                alt="Arreglos y transformaciones de vestidos de novia en Arroyomolinos"
+                width="640"
+                height="480"
+                loading="lazy"
+              />
+            </div>
+            <h3>Arreglos y Transformaciones</h3>
+            <p>
+              Ajustes milimétricos en escotes, colas, mangas y siluetas. Transformamos y modernizamos vestidos heredados o familiares preservando su valor sentimental.
+            </p>
+            <div>
+              <a href="#cita" class="btn btn-secondary" style="width: 100%;">Pedir diagnóstico</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- El Taller & La Artesana -->
+    <section class="section atelier-section" id="taller" data-od-id="atelier">
+      <div class="container grid-split">
+        <div class="atelier-img-box reveal">
+          <img
+            class="content-img"
+            src="assets/taller-vestidos-de-novia-a-mano-arroyomolinos.jpeg"
+            alt="El taller artesanal de Elvira Mallenco en Arroyomolinos"
+            width="1024"
+            height="681"
+            loading="lazy"
+          />
+        </div>
+        <div class="reveal reveal-delay-1">
+          <p class="eyebrow">El Alma de la Casa</p>
+          <h2>La paciencia de la aguja y la cercanía de un taller familiar.</h2>
+          <p class="lead" style="margin-top: 18px;">
+            En Elvira Mallenco cada puntada tiene nombre propio. Creemos en la costura pausada, en el diálogo abierto con la novia y en la tranquilidad que otorga saber que tu vestido está siendo confeccionado con manos expertas en Madrid.
+          </p>
+          <div style="margin-top: 28px; padding-left: 20px; border-left: 2px solid var(--accent);">
+            <p style="font-family: var(--font-display); font-size: 19px; font-style: italic; margin: 0; color: var(--fg);">
+              «Un vestido no es solo una prenda: es el reflejo de tu personalidad en el día más inolvidable de tu vida.»
+            </p>
+            <p class="meta" style="margin-top: 8px;">— Elvira Mallenco, Maestra Costurera</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Proceso Narrativo: El Viaje de tu Vestido -->
+    <section class="section" id="proceso" data-od-id="narrative-process">
+      <div class="container">
+        <div class="reveal" style="text-align: center; max-width: 52ch; margin-inline: auto;">
+          <p class="eyebrow" style="justify-content: center;">El Proceso Creativo</p>
+          <h2>El viaje hacia tu vestido soñado.</h2>
+          <p class="lead" style="margin-top: 14px;">
+            Acompañamos cada fase con mimo, calma y profesionalidad para que disfrutes de cada prueba.
+          </p>
+        </div>
+
+        <div class="process-nav">
+          <div class="step-card active reveal" data-step="1">
+            <span class="step-num">01 · Primera Cita</span>
+            <h4>Escucha & Conexión</h4>
+            <p>Conversamos sobre tus gustos, el estilo de tu ceremonia y exploramos siluetas que potencien tu belleza natural.</p>
+          </div>
+          <div class="step-card reveal reveal-delay-1" data-step="2">
+            <span class="step-num">02 · Creación</span>
+            <h4>Boceto & Tejidos</h4>
+            <p>Trazamos el diseño exclusivo y tocamos las muestras de crepes, tules de seda y encajes hasta hallar los perfectos.</p>
+          </div>
+          <div class="step-card reveal reveal-delay-2" data-step="3">
+            <span class="step-num">03 · Escultura</span>
+            <h4>La Toile & Pruebas</h4>
+            <p>Construimos el prototipo inicial en lienzo de prueba para ajustar las líneas directamente sobre tu figura anatómica.</p>
+          </div>
+          <div class="step-card reveal reveal-delay-3" data-step="4">
+            <span class="step-num">04 · Culminación</span>
+            <h4>Últimas Puntadas</h4>
+            <p>Acabados interiores a mano, planchado artesanal y entrega impecable de tu vestido listo para brillar.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonio de Novia -->
+    <section class="section" data-od-id="quote">
+      <div class="container quote-box reveal">
+        <div class="quote-mark" aria-hidden="true">“</div>
+        <blockquote class="quote">
+          Elegir a Elvira fue la decisión más acertada de mi boda. Supo entender exactamente lo que quería desde el primer boceto y en cada prueba me hizo sentir tranquila, cuidada y especial.
+        </blockquote>
+        <p class="quote-author">— Laura Gómez · Novia Elvira Mallenco (Arroyomolinos)</p>
+      </div>
+    </section>
+
+    <!-- Cita previa y Contacto -->
+    <section class="section cta-strip" id="cita" data-od-id="appointment">
+      <div class="container">
+        <div class="appointment-grid">
+          <div class="reveal">
+            <p class="eyebrow">Atención Personalizada</p>
+            <h2>Reserva tu momento en el atelier.</h2>
+            <p class="lead" style="margin-top: 16px;">
+              Atendemos siempre con cita concertada para dedicarte nuestro espacio en exclusiva. Cuéntanos qué sueñas vestir y nos pondremos en contacto contigo de inmediato.
+            </p>
+
+            <div class="contact-card" style="margin-top: 32px;" id="contacto">
+              <div class="contact-detail-row">
+                <div class="detail-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                </div>
+                <div>
+                  <h4 style="margin: 0; font-size: 16px; font-weight: 600;">Dirección del Atelier</h4>
+                  <p style="margin: 4px 0 0; color: var(--muted); font-size: 14px;">Avenida de Francia, 113, 28939 Arroyomolinos, Madrid</p>
+                </div>
+              </div>
+
+              <div class="contact-detail-row">
+                <div class="detail-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h4 style="margin: 0; font-size: 16px; font-weight: 600;">Teléfono & WhatsApp</h4>
+                  <p style="margin: 4px 0 0; color: var(--muted); font-size: 14px;">+34 622 39 50 14</p>
+                </div>
+              </div>
+
+              <div class="contact-detail-row">
+                <div class="detail-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                </div>
+                <div>
+                  <h4 style="margin: 0; font-size: 16px; font-weight: 600;">Horario de Atelier</h4>
+                  <p style="margin: 4px 0 0; color: var(--muted); font-size: 14px;">De Lunes a Sábado bajo cita previa</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Formulario funcional de cita previa -->
+          <div class="card reveal reveal-delay-1" style="padding: 36px;">
+            <h3 style="margin-bottom: 20px;">Solicitud de Cita Previa</h3>
+            <form id="appointmentForm" onsubmit="event.preventDefault(); window.handleAppointmentSubmit();">
+              <div class="field">
+                <label for="clientName">Nombre y Apellidos *</label>
+                <input class="input" type="text" id="clientName" required placeholder="Ej. Ana Fernández" />
+              </div>
+
+              <div class="field">
+                <label for="clientPhone">Teléfono o WhatsApp *</label>
+                <input class="input" type="tel" id="clientPhone" required placeholder="+34 600 000 000" />
+              </div>
+
+              <div class="field">
+                <label for="serviceType">Tipo de Diseño *</label>
+                <select class="input" id="serviceType" required>
+                  <option value="novia">Vestido de Novia a Medida</option>
+                  <option value="fiesta">Vestido de Fiesta / Madrina</option>
+                  <option value="arreglos">Arreglos y Modificaciones de Alta Costura</option>
+                  <option value="otro">Consulta general sobre diseño</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="eventDate">Fecha aproximada del evento</label>
+                <input class="input" type="date" id="eventDate" />
+              </div>
+
+              <div class="field">
+                <label for="clientNotes">Detalles o ideas sobre tu vestido</label>
+                <textarea class="textarea" id="clientNotes" placeholder="Cuéntanos sobre el corte, tejidos o ideas que tienes en mente..."></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
+                Enviar Solicitud de Cita
+              </button>
+              <p class="meta" style="text-align: center; margin-top: 12px; margin-bottom: 0;">
+                Te confirmaremos la cita por teléfono o WhatsApp en menos de 24 horas.
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal de confirmación de cita -->
+  <div class="modal-backdrop" id="confirmationModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-dialog">
+      <div style="width: 52px; height: 52px; border-radius: var(--radius-pill); background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; margin: 0 auto 18px;">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <h3 id="modalTitle" style="margin-bottom: 12px;">¡Solicitud Recibida!</h3>
+      <p style="color: var(--muted); font-size: 15px; margin-bottom: 24px;">
+        Gracias por ponerte en contacto con Elvira Mallenco Novias. Te llamaremos en breve para concertar tu fecha y hora en el atelier.
+      </p>
+      <button class="btn btn-primary" onclick="window.closeModal()" style="width: 100%;">
+        Entendido
+      </button>
+    </div>
+  </div>
+
+  <!-- Pie de página -->
+  <footer class="pagefoot" data-od-id="footer">
+    <div class="container row-between">
+      <div>
+        <span style="font-family: var(--font-display); font-weight: 600; font-size: 16px; color: var(--fg);">Elvira Mallenco Novias</span>
+        <span class="meta" style="margin-left: 12px;">© 2026 Atelier de Alta Costura</span>
+      </div>
+      <div class="meta">
+        Avenida de Francia, 113 · Arroyomolinos (Madrid) · Tel. +34 622 39 50 14
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script con animaciones narrativas y lógica interactiva -->
+  <script>
+    (function () {
+      // 1. Barra de progreso de lectura en scroll y menú semitransparente reactivo
+      var scrollBar = document.getElementById('scrollProgress');
+      var topnav = document.querySelector('.topnav');
+
+      function handleScroll() {
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        var docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        var progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        if (scrollBar) {
+          scrollBar.style.width = Math.min(progress, 100) + '%';
+        }
+        if (topnav) {
+          if (scrollTop > 24) {
+            topnav.classList.add('scrolled');
+          } else {
+            topnav.classList.remove('scrolled');
+          }
+        }
+      }
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      handleScroll();
+
+      // 2. Animaciones de revelado al hacer scroll (IntersectionObserver)
+      var revealElements = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, {
+          threshold: 0.12,
+          rootMargin: '0px 0px -40px 0px'
+        });
+
+        revealElements.forEach(function (el) {
+          observer.observe(el);
+        });
+      } else {
+        revealElements.forEach(function (el) {
+          el.classList.add('is-visible');
+        });
+      }
+
+      // 3. Pasos narrativos interactivos (El viaje de tu vestido)
+      var stepCards = document.querySelectorAll('.step-card');
+      stepCards.forEach(function (card) {
+        card.addEventListener('click', function () {
+          stepCards.forEach(function (c) { c.classList.remove('active'); });
+          card.classList.add('active');
+        });
+      });
+
+      // 4. Desplazamiento suave para enlaces ancla sin usar scrollIntoView
+      var navLinks = document.querySelectorAll('a[href^="#"]');
+      navLinks.forEach(function (link) {
+        link.addEventListener('click', function (e) {
+          var targetId = link.getAttribute('href');
+          if (targetId && targetId !== '#') {
+            var targetEl = document.querySelector(targetId);
+            if (targetEl) {
+              e.preventDefault();
+              var topOffset = 80;
+              var targetPosition = targetEl.getBoundingClientRect().top + window.pageYOffset - topOffset;
+              window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+              });
+            }
+          }
+        });
+      });
+
+      // 5. Gestión del formulario y modal de confirmación
+      window.handleAppointmentSubmit = function () {
+        var modal = document.getElementById('confirmationModal');
+        if (modal) {
+          modal.classList.add('open');
+        }
+      };
+
+      window.closeModal = function () {
+        var modal = document.getElementById('confirmationModal');
+        if (modal) {
+          modal.classList.remove('open');
+        }
+        var form = document.getElementById('appointmentForm');
+        if (form) {
+          form.reset();
+        }
+      };
+
+      // 6. Menú móvil
+      var mobileBtn = document.getElementById('mobileMenuBtn');
+      if (mobileBtn) {
+        mobileBtn.addEventListener('click', function () {
+          var target = document.getElementById('cita');
+          if (target) {
+            var topOffset = 80;
+            var targetPosition = target.getBoundingClientRect().top + window.pageYOffset - topOffset;
+            window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
