@@ -276,15 +276,258 @@
       align-items: center;
       gap: var(--gap-sm);
     }
+    /* ─── menú móvil y cajón lateral (drawer) de alta costura ────────── */
     .mobile-menu-btn {
       display: none;
-      padding: 8px;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--surface);
       color: var(--fg);
+      cursor: pointer;
+      position: relative;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+      z-index: 60;
+    }
+    .mobile-menu-btn:hover {
+      background: var(--surface-alt);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .mobile-menu-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    .mobile-menu-btn svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      transition: transform 0.25s var(--ease-silk);
+    }
+    .mobile-menu-btn.is-active svg {
+      transform: rotate(90deg);
     }
 
     @media (max-width: 920px) {
       .topnav nav { display: none; }
-      .mobile-menu-btn { display: block; }
+      .mobile-menu-btn { display: inline-flex; }
+    }
+    @media (max-width: 600px) {
+      .topnav-actions .btn-primary {
+        display: none;
+      }
+    }
+
+    /* Telón de fondo del menú móvil */
+    .mobile-drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(44, 40, 37, 0.48);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 998;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.35s var(--ease-silk), visibility 0.35s ease;
+    }
+    .mobile-drawer-backdrop.is-open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    /* Panel lateral deslizante (drawer) que se despliega de derecha a izquierda */
+    .mobile-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: min(400px, 86vw);
+      background: rgba(252, 250, 247, 0.98);
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      border-left: 1px solid var(--border);
+      box-shadow: -16px 0 48px rgba(44, 40, 37, 0.16);
+      z-index: 999;
+      transform: translateX(100%);
+      visibility: hidden;
+      transition: transform 0.42s var(--ease-silk), visibility 0.42s ease;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+    .mobile-drawer.is-open {
+      transform: translateX(0);
+      visibility: visible;
+    }
+
+    .mobile-drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+    .mobile-drawer-close {
+      width: 44px;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--fg);
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.25s var(--ease-silk);
+    }
+    .mobile-drawer-close:hover {
+      background: var(--surface-alt);
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: rotate(90deg);
+    }
+    .mobile-drawer-close:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .mobile-drawer-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      gap: 20px;
+    }
+    .mobile-drawer-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .mobile-drawer-eyebrow::before {
+      content: '';
+      width: 14px;
+      height: 1px;
+      background: var(--accent);
+    }
+    .mobile-drawer-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .mobile-nav-link {
+      display: flex;
+      align-items: center;
+      padding: 13px 16px;
+      border-radius: var(--radius);
+      color: var(--fg);
+      font-family: var(--font-display);
+      font-size: 19px;
+      font-weight: 500;
+      text-decoration: none;
+      border: 1px solid transparent;
+      background: transparent;
+      opacity: 0;
+      transform: translateX(24px);
+      transition: opacity 0.35s ease, transform 0.35s var(--ease-silk), background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+    .mobile-drawer.is-open .mobile-nav-link {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .mobile-drawer.is-open .mobile-nav-link:nth-child(1) { transition-delay: 0.08s; }
+    .mobile-drawer.is-open .mobile-nav-link:nth-child(2) { transition-delay: 0.13s; }
+    .mobile-drawer.is-open .mobile-nav-link:nth-child(3) { transition-delay: 0.18s; }
+    .mobile-drawer.is-open .mobile-nav-link:nth-child(4) { transition-delay: 0.23s; }
+    .mobile-drawer.is-open .mobile-nav-link:nth-child(5) { transition-delay: 0.28s; }
+    .mobile-drawer.is-open .mobile-nav-link:nth-child(6) { transition-delay: 0.33s; }
+
+    .mobile-nav-link .nav-idx {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      width: 32px;
+      flex-shrink: 0;
+      opacity: 0.85;
+    }
+    .mobile-nav-link .nav-txt {
+      flex-grow: 1;
+    }
+    .mobile-nav-link .nav-arr {
+      font-size: 15px;
+      color: var(--muted);
+      opacity: 0.5;
+      transition: transform 0.2s ease, opacity 0.2s ease, color 0.2s ease;
+    }
+    .mobile-nav-link:hover, .mobile-nav-link:focus-visible {
+      background: var(--surface);
+      border-color: var(--border);
+      color: var(--accent);
+      transform: translateX(4px);
+    }
+    .mobile-nav-link:hover .nav-arr, .mobile-nav-link:focus-visible .nav-arr {
+      transform: translateX(3px);
+      opacity: 1;
+      color: var(--accent);
+    }
+
+    .mobile-drawer-footer {
+      margin-top: auto;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .mobile-drawer-footer .btn-primary {
+      width: 100%;
+      padding-block: 14px;
+      font-size: 14px;
+      letter-spacing: 0.04em;
+    }
+    .mobile-contact-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .mobile-contact-line {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .mobile-contact-lbl {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+    .mobile-contact-val {
+      font-size: 13px;
+      color: var(--fg);
+      font-weight: 500;
     }
 
     /* ─── botones ───────────────────────────────────────────────────── */
@@ -600,28 +843,116 @@
       100% { transform: translateX(250%); }
     }
 
+    /* ─── Hero responsivo de alta costura (tablet y móvil) ────────────
+       Garantiza que la imagen fotográfica real del banner NUNCA desaparezca
+       en tabletas ni móviles, manteniendo la nitidez del atelier y el contraste
+       óptimo de lectura. */
     @media (max-width: 960px) {
       .hero {
-        min-height: auto;
-        padding-top: clamp(48px, 6vw, 80px);
-        padding-bottom: clamp(56px, 8vw, 88px);
+        min-height: clamp(520px, 72vh, 700px);
+        padding-top: clamp(48px, 6vw, 76px);
+        padding-bottom: clamp(52px, 7vw, 82px);
       }
       .hero-backdrop-img {
         width: 100%;
-        min-width: 100%;
-        opacity: 0.25;
-        -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.85) 100%);
-        mask-image: linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.85) 100%);
+        min-width: 0;
+        height: 100%;
+        object-fit: cover;
+        object-position: 74% center;
+        opacity: 0.88; /* Imagen claramente visible en tablet */
+        -webkit-mask-image: linear-gradient(to left, 
+          rgba(0, 0, 0, 0.98) 0%, 
+          rgba(0, 0, 0, 0.90) 35%, 
+          rgba(0, 0, 0, 0.55) 68%, 
+          rgba(0, 0, 0, 0.20) 88%, 
+          rgba(0, 0, 0, 0.06) 100%
+        );
+        mask-image: linear-gradient(to left, 
+          rgba(0, 0, 0, 0.98) 0%, 
+          rgba(0, 0, 0, 0.90) 35%, 
+          rgba(0, 0, 0, 0.55) 68%, 
+          rgba(0, 0, 0, 0.20) 88%, 
+          rgba(0, 0, 0, 0.06) 100%
+        );
       }
       .hero-backdrop-fade {
-        background: linear-gradient(to bottom, 
-          color-mix(in oklch, var(--bg) 75%, transparent) 0%, 
-          var(--bg) 55%, 
+        background: 
+          linear-gradient(to right, 
+            rgba(252, 250, 247, 0.96) 0%, 
+            rgba(252, 250, 247, 0.88) 45%, 
+            rgba(252, 250, 247, 0.45) 75%, 
+            rgba(252, 250, 247, 0.15) 100%
+          ),
+          linear-gradient(to bottom, 
+            rgba(252, 250, 247, 0.5) 0%, 
+            transparent 18%, 
+            transparent 82%, 
+            var(--bg) 100%
+          );
+      }
+      .hero-content {
+        max-width: 580px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero {
+        min-height: auto;
+        padding-top: clamp(36px, 8vw, 52px);
+        padding-bottom: clamp(48px, 10vw, 68px);
+      }
+      .hero-backdrop-img {
+        width: 100%;
+        min-width: 0;
+        height: 100%;
+        object-fit: cover;
+        object-position: 65% center;
+        opacity: 0.85; /* Siempre presente, nítida y luminosa en móviles */
+        -webkit-mask-image: linear-gradient(180deg, 
+          rgba(0, 0, 0, 1) 0%, 
+          rgba(0, 0, 0, 0.92) 30%, 
+          rgba(0, 0, 0, 0.58) 65%, 
+          rgba(0, 0, 0, 0.20) 90%, 
+          rgba(0, 0, 0, 0) 100%
+        );
+        mask-image: linear-gradient(180deg, 
+          rgba(0, 0, 0, 1) 0%, 
+          rgba(0, 0, 0, 0.92) 30%, 
+          rgba(0, 0, 0, 0.58) 65%, 
+          rgba(0, 0, 0, 0.20) 90%, 
+          rgba(0, 0, 0, 0) 100%
+        );
+      }
+      .hero-backdrop-fade {
+        background: linear-gradient(180deg, 
+          rgba(252, 250, 247, 0.52) 0%, 
+          rgba(252, 250, 247, 0.78) 35%, 
+          rgba(252, 250, 247, 0.94) 75%, 
           var(--bg) 100%
         );
       }
       .hero-content {
         max-width: 100%;
+      }
+      .hero-title {
+        font-size: clamp(30px, 8vw, 40px);
+      }
+      .hero-cta {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .hero-cta .btn {
+        width: 100%;
+        text-align: center;
+      }
+      .hero-badges-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .hero-trust-list {
+        gap: 12px;
+        font-size: 11px;
       }
     }
 
@@ -967,7 +1298,7 @@
       </nav>
       <div class="topnav-actions">
         <a href="#cita" class="btn btn-primary">Pedir Cita</a>
-        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menú">
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="mobileDrawer">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
             <line x1="3" y1="6" x2="21" y2="6"></line>
             <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -977,6 +1308,82 @@
       </div>
     </div>
   </header>
+
+  <!-- Telón de fondo translúcido del menú móvil -->
+  <div class="mobile-drawer-backdrop" id="mobileDrawerBackdrop" aria-hidden="true"></div>
+
+  <!-- Cajón lateral deslizante de derecha a izquierda -->
+  <aside class="mobile-drawer" id="mobileDrawer" role="dialog" aria-modal="true" aria-label="Menú principal de navegación">
+    <div class="mobile-drawer-header">
+      <a href="#" class="brand-mark" style="text-decoration: none;">
+        <span class="logo">Elvira Mallenco</span>
+        <span class="sublogo">Atelier · Alta Costura</span>
+      </a>
+      <button class="mobile-drawer-close" id="mobileDrawerClose" aria-label="Cerrar menú">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <div class="mobile-drawer-body">
+      <div class="mobile-drawer-eyebrow">Navegación del Atelier</div>
+      <nav class="mobile-drawer-nav" aria-label="Secciones del atelier">
+        <a href="#novias" class="mobile-nav-link">
+          <span class="nav-idx">01</span>
+          <span class="nav-txt">Novias a Medida</span>
+          <span class="nav-arr">→</span>
+        </a>
+        <a href="#fiesta" class="mobile-nav-link">
+          <span class="nav-idx">02</span>
+          <span class="nav-txt">Fiesta & Madrinas</span>
+          <span class="nav-arr">→</span>
+        </a>
+        <a href="#taller" class="mobile-nav-link">
+          <span class="nav-idx">03</span>
+          <span class="nav-txt">El Taller Artesanal</span>
+          <span class="nav-arr">→</span>
+        </a>
+        <a href="#proceso" class="mobile-nav-link">
+          <span class="nav-idx">04</span>
+          <span class="nav-txt">El Proceso Creativo</span>
+          <span class="nav-arr">→</span>
+        </a>
+        <a href="#arreglos" class="mobile-nav-link">
+          <span class="nav-idx">05</span>
+          <span class="nav-txt">Arreglos y Modificaciones</span>
+          <span class="nav-arr">→</span>
+        </a>
+        <a href="#contacto" class="mobile-nav-link">
+          <span class="nav-idx">06</span>
+          <span class="nav-txt">Contacto & Ubicación</span>
+          <span class="nav-arr">→</span>
+        </a>
+      </nav>
+
+      <div class="mobile-drawer-footer">
+        <a href="#cita" class="btn btn-primary" style="width: 100%; text-align: center;">
+          Reservar Cita Previa
+        </a>
+
+        <div class="mobile-contact-box">
+          <div class="mobile-contact-line">
+            <span class="mobile-contact-lbl">Atelier en Arroyomolinos</span>
+            <span class="mobile-contact-val">Av. de Francia, 113 · Madrid</span>
+          </div>
+          <div class="mobile-contact-line">
+            <span class="mobile-contact-lbl">Atención Directa & WhatsApp</span>
+            <span class="mobile-contact-val">+34 622 39 50 14</span>
+          </div>
+          <div class="mobile-contact-line">
+            <span class="mobile-contact-lbl">Disponibilidad</span>
+            <span class="mobile-contact-val">Lunes a Sábado bajo cita previa</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
 
   <main id="content">
     <!-- Hero monumental, elegante y moderno de alta costura con fondo difuminado -->
@@ -1440,18 +1847,83 @@
         }
       };
 
-      // 6. Menú móvil
+      // 6. Menú móvil interactivo con despliegue fluido de derecha a izquierda
       var mobileBtn = document.getElementById('mobileMenuBtn');
+      var mobileDrawer = document.getElementById('mobileDrawer');
+      var drawerBackdrop = document.getElementById('mobileDrawerBackdrop');
+      var drawerClose = document.getElementById('mobileDrawerClose');
+      var drawerLinks = document.querySelectorAll('.mobile-drawer-nav a, .mobile-drawer-footer a');
+
+      function openDrawer() {
+        if (!mobileDrawer) return;
+        mobileDrawer.classList.add('is-open');
+        if (drawerBackdrop) drawerBackdrop.classList.add('is-open');
+        if (mobileBtn) {
+          mobileBtn.classList.add('is-active');
+          mobileBtn.setAttribute('aria-expanded', 'true');
+        }
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeDrawer() {
+        if (!mobileDrawer) return;
+        mobileDrawer.classList.remove('is-open');
+        if (drawerBackdrop) drawerBackdrop.classList.remove('is-open');
+        if (mobileBtn) {
+          mobileBtn.classList.remove('is-active');
+          mobileBtn.setAttribute('aria-expanded', 'false');
+        }
+        document.body.style.overflow = '';
+      }
+
       if (mobileBtn) {
-        mobileBtn.addEventListener('click', function () {
-          var target = document.getElementById('cita');
-          if (target) {
-            var topOffset = 80;
-            var targetPosition = target.getBoundingClientRect().top + window.pageYOffset - topOffset;
-            window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+        mobileBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          if (mobileDrawer && mobileDrawer.classList.contains('is-open')) {
+            closeDrawer();
+          } else {
+            openDrawer();
           }
         });
       }
+
+      if (drawerClose) {
+        drawerClose.addEventListener('click', function (e) {
+          e.preventDefault();
+          closeDrawer();
+        });
+      }
+
+      if (drawerBackdrop) {
+        drawerBackdrop.addEventListener('click', function () {
+          closeDrawer();
+        });
+      }
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && mobileDrawer && mobileDrawer.classList.contains('is-open')) {
+          closeDrawer();
+        }
+      });
+
+      drawerLinks.forEach(function (link) {
+        link.addEventListener('click', function (e) {
+          var href = link.getAttribute('href');
+          closeDrawer();
+          if (href && href.startsWith('#') && href !== '#') {
+            e.preventDefault();
+            var targetEl = document.querySelector(href);
+            if (targetEl) {
+              var topOffset = 70;
+              var targetPosition = targetEl.getBoundingClientRect().top + window.pageYOffset - topOffset;
+              window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+              });
+            }
+          }
+        });
+      });
     })();
   </script>
 </body>
